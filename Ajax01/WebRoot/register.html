@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>注册</title>
+		<style type="text/css">
+			.ok {
+				color: green;
+				border: 1px solid green;
+			}
+			.error {
+				color: red;
+				border: 1px solid red;
+			}
+		</style>
+		<script type="text/javascript">
+			//创建Ajax对象(XMLHttpRequest)
+			function getXHR() {
+				//根据对象判断浏览器
+				if(XMLHttpRequest) {
+					//不是IE
+					return new XMLHttpRequest();
+				} else {
+					//IE
+					return new ActiveXObject(
+						"Microsoft.XMLHttp");
+				}
+			}
+			//校验账号
+			function check_code() {
+				//获取账号
+				var code = document.getElementById("code").value;
+				//校验账号是否为空
+				if(code == "") {
+					var span = document.getElementById("code_msg");
+					span.innerHTML = "请输入账号";
+					span.className = "error";
+					return;
+				}
+				//校验账号是否存在
+				var xhr = getXHR();
+				xhr.onreadystatechange = 
+					function(){callback(xhr);};
+				xhr.open("post","register",true);
+				xhr.setRequestHeader("content-type",
+					"application/x-www-form-urlencoded");
+				xhr.send("userName="+code);
+			}
+			//回调函数
+			function callback(xhr) {
+				//当请求结束且没报错时
+				if(xhr.readyState==4 && xhr.status==200) {
+					var txt = xhr.responseText;
+					var span = document.getElementById("code_msg");
+					if(txt == 0) {
+						//用户名合法
+						span.innerHTML = "用户名合法";
+						span.className = "ok";
+					} else {
+						//用户名已存在
+						span.innerHTML = "用户名已存在";
+						span.className = "error";
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<form>
+			<h1>注册</h1>
+			<p>
+				账号:
+				<input type="text" id="code" onblur="check_code();"/>
+				<span id="code_msg"></span>
+			</p>
+			<p>密码:<input type="password"/></p>
+			<p>确认密码:<input type="password"/></p>
+			<p><button>注册</button></p>
+		</form>
+	</body>
+</html>
+
+
+
+
+

@@ -1,0 +1,64 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>级联操作</title>
+		<script type="text/javascript">
+			//创建Ajax对象(XMLHttpRequest)
+			function getXHR() {
+				//根据对象判断浏览器
+				if(XMLHttpRequest) {
+					//不是IE
+					return new XMLHttpRequest();
+				} else {
+					//IE
+					return new ActiveXObject(
+						"Microsoft.XMLHttp");
+				}
+			}
+			//切换省份，重置城市
+			function change() {
+				//获取选中的省份ID
+				var id = document.getElementById("province").value;
+				var xhr = getXHR();
+				xhr.onreadystatechange = 
+					function() {callback(xhr);};
+				xhr.open("post","city",true);
+				xhr.setRequestHeader("content-type",
+					"application/x-www-form-urlencoded");
+				xhr.send("provinceId="+id);
+			}
+			function callback(xhr) {
+				if(xhr.readyState==4 && xhr.status==200) {
+					var txt = xhr.responseText;
+					var names = txt.split(",");
+					//获取并重置城市下拉选
+					var sel = document.getElementById("city");
+					sel.innerHTML = "<option>-城市-</option>";
+					//循环插入每一个城市
+					for(var i=0;i<names.length;i++) {
+						var opn = document.createElement("option");
+						opn.innerHTML = names[i];
+						sel.appendChild(opn);
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<select id="province" onchange="change();">
+			<option value="0">-省份-</option>
+			<option value="1">浙江省</option>
+			<option value="2">江苏省</option>
+			<option value="3">山东省</option>
+		</select>
+		<select id="city">
+			<option>-城市-</option>
+		</select>
+	</body>
+</html>
+
+
+
+
+

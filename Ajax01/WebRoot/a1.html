@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8"/>
+		<title>Ajax对象</title>
+		<script type="text/javascript">
+			//创建Ajax对象(XMLHttpRequest)
+			function getXHR() {
+				//根据对象判断浏览器
+				if(XMLHttpRequest) {
+					//不是IE
+					return new XMLHttpRequest();
+				} else {
+					//IE
+					return new ActiveXObject(
+						"Microsoft.XMLHttp");
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<button onclick="alert(getXHR());">Ajax</button>
+	</body>
+</html>
+
+
+
+
+
